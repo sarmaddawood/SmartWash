@@ -28,7 +28,5 @@ namespace SmartWash.ViewModels.Orders
 
         [Range(1, 100)]
         public int Quantity { get; set; } = 1;
-
-        public decimal PricePerItem { get; set; }
     }
 }

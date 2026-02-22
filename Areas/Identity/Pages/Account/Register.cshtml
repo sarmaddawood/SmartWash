@@ -1,67 +1,119 @@
 ﻿@page
 @model RegisterModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Create Account";
+    Layout = null;
 }
 
-<h1>@ViewData["Title"]</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SmartWash</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent-orange: #FF8F00;
+            --dark-blue: #1A1F36;
+        }
+        body {
+            background: linear-gradient(135deg, #F0F4F8 0%, #E2E8F0 100%);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .auth-card {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(26, 31, 54, 0.1);
+            width: 100%;
+            max-width: 480px;
+            padding: 40px;
+            border: 1px solid rgba(255,255,255,0.8);
+        }
+        .brand-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .brand-logo {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--dark-blue);
+            margin-bottom: 8px;
+        }
+        .brand-logo i { color: var(--accent-orange); margin-right: 8px; }
+        
+        .form-control {
+            border-radius: 12px;
+            padding: 12px 18px;
+            border: 1px solid #E2E8F0;
+            background: #F8FAFC;
+        }
+        .form-control:focus {
+            box-shadow: 0 0 0 4px rgba(255, 143, 0, 0.1);
+            border-color: var(--accent-orange);
+        }
+        .btn-primary {
+            background: var(--accent-orange);
+            border: none;
+            padding: 14px;
+            border-radius: 14px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            background: #E67E00;
+            box-shadow: 0 8px 20px rgba(255, 143, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-card">
+        <div class="brand-header">
+            <div class="brand-logo"><i class="bi bi-water"></i>SmartWash</div>
+            <p class="text-muted">Join the elite garment care network</p>
+        </div>
 
-<div class="row">
-    <div class="col-md-4">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2>Create a new account.</h2>
-            <hr />
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                <label asp-for="Input.Email">Email</label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+            
+            <div class="mb-3">
+                <label asp-for="Input.Email" class="form-label small fw-bold text-uppercase text-muted">Corporate Email</label>
+                <input asp-for="Input.Email" class="form-control" placeholder="name@company.com" />
+                <span asp-validation-for="Input.Email" class="text-danger small"></span>
             </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.Password">Password</label>
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Input.Password" class="form-label small fw-bold text-uppercase text-muted">Password</label>
+                    <input asp-for="Input.Password" type="password" class="form-control" placeholder="••••••••" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Input.ConfirmPassword" class="form-label small fw-bold text-uppercase text-muted">Verify</label>
+                    <input asp-for="Input.ConfirmPassword" type="password" class="form-control" placeholder="••••••••" />
+                </div>
+                <div class="col-12 mb-4">
+                    <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger small"></span>
+                </div>
             </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.ConfirmPassword">Confirm Password</label>
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-primary mb-4">Create Master Account</button>
+
+            <div class="text-center">
+                <p class="text-muted small">Already recognized? <a asp-page="./Login" class="text-dark fw-bold text-decoration-none">Back to Login</a></p>
             </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
     </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to register.</h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins!)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
-            }
-        </section>
-    </div>
-</div>
 
-@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <partial name="_ValidationScriptsPartial" />
-}
+</body>
+</html>

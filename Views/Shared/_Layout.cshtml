@@ -8,6 +8,43 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <style>
+        :root {
+            --brand-royal: #1A1F36;
+            --accent-orange: #FF8F00;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --card-shadow: 0 10px 30px -5px rgba(0,0,0,0.05);
+        }
+
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #F8FAFC; 
+            color: #1A1F36; 
+        }
+
+        .btn-primary { 
+            background: var(--brand-royal); 
+            border: none; 
+            border-radius: 0.75rem;
+            padding: 0.8rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover { 
+            background: var(--accent-orange); 
+            transform: translateY(-2px); 
+            box-shadow: 0 5px 15px rgba(255,143,0,0.3);
+        }
+
+        .navbar { 
+            backdrop-filter: blur(10px); 
+            background: rgba(255,255,255,0.8) !important; 
+        }
+        .navbar-brand { font-weight: 800; color: var(--brand-royal) !important; }
+        .text-orange { color: var(--accent-orange); }
+    </style>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SmartWash.styles.css" asp-append-version="true" />
 </head>
@@ -16,7 +53,7 @@
         <nav class="navbar navbar-expand-lg navbar-light fixed-top border-bottom">
             <div class="container">
                 <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
-                    <span class="fs-4">SmartWash</span>
+                    <span>Smart<span class="text-orange">Wash</span></span>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain"
                         aria-expanded="false" aria-label="Toggle navigation">

@@ -2,82 +2,125 @@
 @model LoginModel
 
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "Secure Login";
+    Layout = null;
 }
 
-<h1>@ViewData["Title"]</h1>
-<div class="row">
-    <div class="col-md-4">
-        <section>
-            <form id="account" method="post">
-                <h2>Use a local account to log in.</h2>
-                <hr />
-                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                    <label asp-for="Input.Email" class="form-label">Email</label>
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
-                </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                    <label asp-for="Input.Password" class="form-label">Password</label>
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                </div>
-                <div class="checkbox mb-3">
-                    <label asp-for="Input.RememberMe" class="form-label">
-                        <input class="form-check-input" asp-for="Input.RememberMe" />
-                        @Html.DisplayNameFor(m => m.Input.RememberMe)
-                    </label>
-                </div>
-                <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-                </div>
-                <div>
-                    <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                    </p>
-                    <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                    </p>
-                    <p>
-                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
-                    </p>
-                </div>
-            </form>
-        </section>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to log in.</h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins!)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
-            }
-        </section>
-    </div>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SmartWash</title>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent-orange: #FF8F00;
+            --dark-blue: #1A1F36;
+        }
+        body {
+            background: linear-gradient(135deg, #F0F4F8 0%, #E2E8F0 100%);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .auth-card {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(26, 31, 54, 0.1);
+            width: 100%;
+            max-width: 440px;
+            padding: 40px;
+            border: 1px solid rgba(255,255,255,0.8);
+        }
+        .brand-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .brand-logo {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--dark-blue);
+            margin-bottom: 8px;
+        }
+        .brand-logo i { color: var(--accent-orange); margin-right: 8px; }
+        
+        .form-control {
+            border-radius: 12px;
+            padding: 12px 18px;
+            border: 1px solid #E2E8F0;
+            background: #F8FAFC;
+        }
+        .form-control:focus {
+            box-shadow: 0 0 0 4px rgba(255, 143, 0, 0.1);
+            border-color: var(--accent-orange);
+        }
+        .btn-primary {
+            background: var(--accent-orange);
+            border: none;
+            padding: 14px;
+            border-radius: 14px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            background: #E67E00;
+            box-shadow: 0 8px 20px rgba(255, 143, 0, 0.3);
+        }
+        .auth-link {
+            color: var(--dark-blue);
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .auth-link:hover { color: var(--accent-orange); }
+    </style>
+</head>
+<body>
+    <div class="auth-card">
+        <div class="brand-header">
+            <div class="brand-logo"><i class="bi bi-water"></i>SmartWash</div>
+            <p class="text-muted">High-performance garment care management</p>
+        </div>
 
-@section Scripts {
+        <form id="account" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+            
+            <div class="mb-4">
+                <label asp-for="Input.Email" class="form-label small fw-bold text-uppercase text-muted">Email Address</label>
+                <input asp-for="Input.Email" class="form-control" placeholder="name@company.com" />
+                <span asp-validation-for="Input.Email" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Input.Password" class="form-label small fw-bold text-uppercase text-muted">Password</label>
+                <input asp-for="Input.Password" type="password" class="form-control" placeholder="••••••••" />
+                <span asp-validation-for="Input.Password" class="text-danger small"></span>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="form-check">
+                    <input class="form-check-input" asp-for="Input.RememberMe" />
+                    <label class="form-check-label small" asp-for="Input.RememberMe">Keep me logged in</label>
+                </div>
+                <a id="forgot-password" asp-page="./ForgotPassword" class="small auth-link">Forgot?</a>
+            </div>
+
+            <button type="submit" class="w-100 btn btn-primary mb-4">Initialize Session</button>
+
+            <div class="text-center">
+                <p class="text-muted small">Access forbidden? <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="auth-link">Request Account</a></p>
+            </div>
+        </form>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <partial name="_ValidationScriptsPartial" />
-}
+</body>
+</html>

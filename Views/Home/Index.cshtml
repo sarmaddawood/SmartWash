@@ -2,21 +2,21 @@
     ViewData["Title"] = "SmartWash - Premium Garment Care";
 }
 
-<div class="hero-section text-center py-5 mb-5 position-relative overflow-hidden" style="background: linear-gradient(135deg, #0d6efd 0%, #00d2ff 100%); border-radius: 0 0 4rem 4rem; min-height: 80vh; display: flex; align-items: center;">
+<div class="hero-section text-center py-5 mb-5 position-relative overflow-hidden" style="background: linear-gradient(135deg, #1A1F36 0%, #2D3748 100%); border-radius: 0 0 4rem 4rem; min-height: 80vh; display: flex; align-items: center;">
     <div class="circles">
         <div class="circle circle-1"></div>
-        <div class="circle circle-2"></div>
+        <div class="circle circle-2" style="background: rgba(255, 143, 0, 0.1);"></div>
         <div class="circle circle-3"></div>
     </div>
     
     <div class="container py-5 position-relative z-1">
         <div class="row justify-content-center">
             <div class="col-lg-8 text-white">
-                <span class="badge rounded-pill bg-white text-primary px-3 py-2 mb-4 fw-bold shadow-sm">NEW: Express 4-Hour Service Available</span>
-                <h1 class="display-2 fw-bold mb-4">Laundry Day, <br><span class="text-white-50">Redefined.</span></h1>
-                <p class="lead mb-5 opacity-90 fs-4">Experience the most advanced garment care platform. From stain removal to doorstep delivery, we handle it all with a touch of magic.</p>
+                <span class="badge rounded-pill px-3 py-2 mb-4 fw-bold shadow-sm" style="background: var(--accent-orange); color: white;">NEW: Express 4-Hour Service Available</span>
+                <h1 class="display-2 fw-bold mb-4">Laundry Day, <br><span style="color: var(--accent-orange);">Redefined.</span></h1>
+                <p class="lead mb-5 opacity-90 fs-4">Experience the most advanced garment care platform. From stain removal to doorstep delivery, we handle it all with elite precision.</p>
                 <div class="d-flex flex-wrap justify-content-center gap-3">
-                    <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-light btn-lg px-5 py-3 rounded-pill fw-bold shadow-lg transform-hover">Get Started Free</a>
+                    <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary shadow-lg transform-hover px-5 py-3">Get Started Free</a>
                     <a href="#services" class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill fw-bold transform-hover">Explore Services</a>
                 </div>
             </div>

@@ -12,93 +12,146 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
+            --primary-bg: #F0F4F8;
+            --sidebar-bg: #FFFFFF;
+            --accent-orange: #FF8F00;
+            --accent-orange-glow: rgba(255, 143, 0, 0.4);
+            --dark-blue: #1A1F36;
+            --text-main: #2D3748;
+            --text-muted: #718096;
+            --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
             --sidebar-width: 260px;
-            --header-height: 64px;
         }
 
         body { 
             font-family: 'Inter', sans-serif; 
-            background-color: #f0f2f5; 
-            transition: background-color 0.3s ease; 
-            overflow-x: hidden;
+            background: linear-gradient(135deg, #F0F4F8 0%, #E2E8F0 100%);
+            color: var(--text-main);
+            transition: all 0.3s ease; 
+            min-height: 100vh;
         }
 
-        .dashboard-container { display: flex; min-height: 100vh; }
-
+        /* Sidebar Styling - Fintech Style */
         .sidebar { 
             width: var(--sidebar-width); 
-            background: #fff; 
-            border-right: 1px solid #e5e7eb; 
+            background: var(--sidebar-bg); 
+            border-right: none; 
             position: fixed; 
-            height: 100vh; 
-            padding-top: 1.5rem; 
+            height: calc(100vh - 40px); 
+            margin: 20px;
+            border-radius: 24px;
+            padding-top: 2rem; 
             transition: all 0.3s ease; 
             z-index: 1050; 
-            left: 0;
+            box-shadow: var(--card-shadow);
         }
 
         .main-content { 
             flex: 1; 
-            margin-left: var(--sidebar-width); 
-            padding: 1.5rem; 
-            background-color: inherit; 
+            margin-left: calc(var(--sidebar-width) + 40px); 
+            padding: 2rem; 
             min-width: 0;
             transition: margin-left 0.3s ease;
         }
 
         .sticky-header {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            background-color: rgba(255, 255, 255, 0.8) !important;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid #e5e7eb;
-            margin: -2rem -1.5rem 2rem -1.5rem;
+            background: rgba(255, 255, 255, 0.7) !important;
+            backdrop-filter: blur(15px);
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            margin-bottom: 2rem;
             padding: 1rem 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
         }
 
-        /* Dark Mode Variables */
-        body.dark-mode { background-color: #111827; color: #f9fafb; }
-        body.dark-mode .sidebar { background-color: #1f2937; border-color: #374151; }
-        body.dark-mode .nav-link { color: #d1d5db; }
-        body.dark-mode .nav-link:hover { background-color: #374151; color: #60a5fa; }
-        body.dark-mode .nav-link.active { background-color: rgba(37, 99, 235, 0.2); color: #60a5fa; }
-        body.dark-mode .card, body.dark-mode .bg-white, body.dark-mode .bg-light { background-color: #1f2937 !important; color: #f9fafb; border-color: #374151 !important; }
-        body.dark-mode .text-muted { color: #9ca3af !important; }
-        body.dark-mode .table { color: #f9fafb; border-color: #374151; }
-        body.dark-mode thead { background-color: #374151 !important; color: #fff; }
-        body.dark-mode .sticky-header { background-color: rgba(31, 41, 55, 0.8) !important; border-bottom-color: #374151; }
-        body.dark-mode .btn-light { background-color: #374151; border-color: #4b5563; color: #f9fafb; }
-
+        /* Nav Links Refined */
         .nav-link { 
-            color: #4b5563; 
+            color: var(--text-muted); 
             font-weight: 500; 
-            padding: 0.8rem 1.2rem; 
-            border-radius: 0.5rem; 
-            margin: 0.2rem 1rem; 
+            padding: 0.9rem 1.5rem; 
+            border-radius: 14px; 
+            margin: 0.3rem 1.2rem; 
             display: flex; 
             align-items: center; 
-            min-height: 48px; /* Touch friendly */
+            transition: all 0.2s ease;
         }
-        .nav-link:hover { background-color: #f3f4f6; color: #2563eb; }
-        .nav-link.active { background-color: #eff6ff; color: #2563eb; }
-        .nav-link i { margin-right: 0.8rem; font-size: 1.25rem; }
         
-        /* Mobile Specific */
+        .nav-link i { 
+            margin-right: 1rem; 
+            font-size: 1.2rem; 
+            opacity: 0.7;
+        }
+
+        .nav-link:hover { 
+            background: #F7FAFC;
+            color: var(--dark-blue);
+            transform: translateX(5px);
+        }
+
+        .nav-link.active { 
+            background: linear-gradient(90deg, var(--accent-orange) 0%, #FFB300 100%); 
+            color: #fff !important; 
+            box-shadow: 0 8px 20px var(--accent-orange-glow);
+        }
+        
+        .nav-link.active i { opacity: 1; }
+
+        /* Card Styling */
+        .card {
+            background: #fff;
+            border: none;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            transition: transform 0.2s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Branding */
+        .brand-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--dark-blue);
+            letter-spacing: -0.5px;
+        }
+        .brand-icon {
+            color: var(--accent-orange);
+            margin-right: 0.5rem;
+        }
+
+        /* Buttons Fintech Style */
+        .btn-primary {
+            background: var(--accent-orange);
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px var(--accent-orange-glow);
+        }
+        
+        .btn-primary:hover {
+            background: #e67e00;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px var(--accent-orange-glow);
+        }
+
+        /* Dark Mode Refinements */
+        body.dark-mode { 
+            background: #0F172A; 
+            color: #F1F5F9; 
+        }
+        body.dark-mode .sidebar { background-color: #1E293B; border: 1px solid rgba(255,255,255,0.05); }
+        body.dark-mode .sticky-header { background-color: rgba(30, 41, 59, 0.7) !important; border-color: rgba(255,255,255,0.05); }
+        body.dark-mode .card { background-color: #1E293B !important; color: #F8FAFC; border: 1px solid rgba(255,255,255,0.05); }
+        body.dark-mode .text-muted { color: #94A3B8 !important; }
+
+        /* Mobile Adjustments */
         @@media (max-width: 991.98px) {
-            .sidebar { 
-                transform: translateX(-100%); 
-            }
-            .sidebar.show { 
-                transform: translateX(0); 
-            }
-            .main-content { 
-                margin-left: 0; 
-                padding: 1rem;
-            }
+            .sidebar { margin: 0; height: 100vh; border-radius: 0; top: 0; left: 0; }
+            .main-content { margin-left: 0; padding: 1.5rem; }
             .sticky-header {
                 margin: -1.5rem -1rem 1.5rem -1rem;
                 padding: 0.75rem 1rem;
@@ -139,10 +192,10 @@
 
     <div class="dashboard-container">
         <!-- Sidebar Navigation -->
-        <aside class="sidebar shadow-sm" id="sidebar">
-            <div class="px-4 mb-4 d-flex align-items-center justify-content-between">
-                <div>
-                    <span class="fs-4 fw-bold text-primary">Smart</span><span class="fs-4 fw-bold">Wash</span>
+        <aside class="sidebar shadow-lg" id="sidebar">
+            <div class="px-4 mb-5 d-flex align-items-center justify-content-between">
+                <div class="brand-logo">
+                    <i class="bi bi-water brand-icon"></i>Smart<span class="text-orange">Wash</span>
                 </div>
                 <button class="btn btn-sm d-lg-none" onclick="toggleSidebar()">
                     <i class="bi bi-x-lg"></i>
@@ -150,40 +203,39 @@
             </div>
             
             <nav class="nav flex-column mb-auto">
+                <div class="px-4 mb-3 small text-muted fw-bold text-uppercase ls-wide">Main Menu</div>
                 @if (User.IsInRole("Admin"))
                 {
-                    <div class="px-4 mb-2 small text-muted fw-bold text-uppercase ls-wide">Admin Control</div>
                     <a class="nav-link @(ViewData["ActivePage"]?.ToString() == "AdminDashboard" ? "active" : "")" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
-                        <i class="bi bi-speedometer2"></i> Executive Overview
+                        <i class="bi bi-grid-1x2-fill"></i> Overview
                     </a>
                     <a class="nav-link @(ViewData["ActivePage"]?.ToString() == "AdminUsers" ? "active" : "")" asp-area="Admin" asp-controller="Dashboard" asp-action="Users">
-                        <i class="bi bi-people"></i> Staff & Users
+                        <i class="bi bi-people-fill"></i> Workspace
                     </a>
                     <a class="nav-link @(ViewData["ActivePage"]?.ToString() == "AdminPricing" ? "active" : "")" asp-area="Admin" asp-controller="Dashboard" asp-action="Pricing">
-                        <i class="bi bi-tag"></i> Manage Pricing
+                        <i class="bi bi-wallet2"></i> Economics
                     </a>
-                    <hr class="mx-3 my-3">
                 }
                 
                 @if (User.IsInRole("Staff"))
                 {
-                    <div class="px-4 mb-2 small text-muted fw-bold text-uppercase ls-wide">Staff Console</div>
                     <a class="nav-link @(ViewData["ActivePage"]?.ToString() == "StaffDashboard" ? "active" : "")" asp-area="Staff" asp-controller="Staff" asp-action="Index">
-                        <i class="bi bi-clipboard-data"></i> Operations
+                        <i class="bi bi-kanban"></i> Operations
                     </a>
-                    <hr class="mx-3 my-3">
                 }
 
-                <div class="px-4 mb-2 small text-muted fw-bold text-uppercase ls-wide">User Menu</div>
                 <a class="nav-link @(ViewData["ActivePage"]?.ToString() == "CustomerDashboard" ? "active" : "")" asp-area="" asp-controller="DashboardRedirect" asp-action="Index">
-                    <i class="bi bi-grid"></i> My Dashboard
+                    <i class="bi bi-person-badge"></i> My Account
                 </a>
-                <a class="nav-link" asp-area="" asp-controller="Service" asp-action="Index">
-                    <i class="bi bi-plus-circle"></i> Place Order
+                
+                <div class="px-4 mt-5 mb-3 small text-muted fw-bold text-uppercase ls-wide">Settings</div>
+                <a class="nav-link" asp-area="" asp-controller="Orders" asp-action="Create">
+                    <i class="bi bi-plus-circle-fill"></i> New Order
                 </a>
+                
                 <form class="nav-link p-0 m-0 border-0" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
                     <button type="submit" class="nav-link border-0 bg-transparent w-100 text-start m-0">
-                        <i class="bi bi-box-arrow-right"></i> Logout
+                        <i class="bi bi-power"></i> Log out
                     </button>
                 </form>
             </nav>
@@ -191,13 +243,15 @@
 
         <!-- Main Content Area -->
         <main class="main-content">
-            <header class="sticky-header shadow-sm bg-white rounded-4">
+            <header class="sticky-header d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
                     <button class="btn btn-light rounded-circle me-3 d-lg-none" onclick="toggleSidebar()">
                         <i class="bi bi-list fs-4"></i>
                     </button>
-                    <span class="text-muted fw-medium d-none d-sm-inline">Welcome back, <strong>@User.Identity?.Name</strong></span>
-                    <span class="text-muted fw-medium d-inline d-sm-none">Hello!</span>
+                    <div class="d-none d-md-block">
+                        <h5 class="fw-bold mb-0">Dashboard</h5>
+                        <span class="text-muted small">Welcome back, @User.Identity?.Name</span>
+                    </div>
                  </div>
                 <div class="d-flex align-items-center">
                     <button class="btn btn-light rounded-circle me-2" onclick="toggleDarkMode()" title="Toggle Dark Mode">
