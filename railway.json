@@ -1,0 +1,27 @@
+{
+  "build": {
+    "builder": "railpack",
+    "buildCommand": "dotnet restore",
+    "installPackages": [
+      "libicu-dev",
+      "libgd3",
+      "libjpeg62-turbo",
+      "fontconfig-config",
+      "fonts-dejavu-core"
+    ]
+  },
+  "deploy": {
+    "startCommand": "ASPNETCORE_URLS=http://0.0.0.0:${PORT:-3000} dotnet watch run --project $(ls *.csproj | head -n 1)"
+  },
+  "plugins": {
+    "dotnet": {
+      "version": "8.0.418"
+    }
+  },
+  "env": {
+    "DOTNET_RUNNING_IN_CONTAINER": "true"
+  },
+  "settings": {
+    "region": "us-west1"
+  }
+}
