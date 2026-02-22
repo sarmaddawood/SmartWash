@@ -9,6 +9,13 @@ QuestPDF.Settings.License = LicenseType.Community;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Railway deployment: bind Kestrel to the PORT env var (fallback 8080)
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(int.Parse(port));
+});
+
 // Ensure appsettings.json is loaded
 builder.Configuration.SetBasePath(Directory.GetCurrentDirectory());
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
@@ -73,7 +80,8 @@ else
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+// Note: HTTPS redirection is disabled; Railway handles TLS at the proxy layer.
+// app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
