@@ -22,31 +22,39 @@ namespace SmartWash.Controllers
         }
 
         // GET: Orders/Create
-        [Authorize(Roles = "Customer,Admin")]
+        [Authorize(Roles = "Admin,Staff")]
         public async Task<IActionResult> Create()
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return Challenge();
 
             var profile = await _context.CustomerProfiles.FirstOrDefaultAsync(p => p.UserId == user.Id);
+            var activeServices = await _context.ServicePrices.Where(s => s.IsActive).ToListAsync();
 
             var model = new CreateOrderViewModel
             {
                 CustomerName = profile?.FullName ?? "",
                 Address = profile?.Address ?? "",
                 PhoneNumber = profile?.PhoneNumber ?? "",
-                Items = new List<OrderItemViewModel> { new OrderItemViewModel() }
+                Items = new List<OrderItemViewModel> { new OrderItemViewModel() },
+                AvailableServices = activeServices
             };
 
             return View(model);
         }
 
         [HttpPost]
-        [Authorize(Roles = "Customer,Admin")]
+        [Authorize(Roles = "Admin,Staff")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateOrderViewModel model)
         {
-            if (!ModelState.IsValid) return View(model);
+            var activeServices = await _context.ServicePrices.Where(s => s.IsActive).ToListAsync();
+            
+            if (!ModelState.IsValid) 
+            {
+                model.AvailableServices = activeServices;
+                return View(model);
+            }
 
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return Challenge();
@@ -71,13 +79,18 @@ namespace SmartWash.Controllers
             {
                 Id = Guid.NewGuid(),
                 CustomerId = profile.Id,
+                CreatedById = user.Id, // Track which Staff/Admin created this
                 OrderDate = DateTime.UtcNow,
-                Status = "Pending",
-                TotalPrice = model.Items.Sum(i => i.Quantity * GetPrice(i.ItemType, i.ServiceType))
+                Status = "Pending"
             };
+
+            decimal totalPrice = 0;
 
             foreach (var item in model.Items)
             {
+                decimal itemPrice = GetPrice(item.ItemType, item.ServiceType, activeServices);
+                totalPrice += item.Quantity * itemPrice;
+
                 order.Items.Add(new LaundryItem
                 {
                     Id = Guid.NewGuid(),
@@ -85,9 +98,10 @@ namespace SmartWash.Controllers
                     ItemType = item.ItemType,
                     ServiceType = item.ServiceType,
                     Quantity = item.Quantity,
-                    Price = GetPrice(item.ItemType, item.ServiceType)
+                    Price = itemPrice
                 });
             }
+            order.TotalPrice = totalPrice;
 
             _context.LaundryOrders.Add(order);
             await _context.SaveChangesAsync();
@@ -97,9 +111,9 @@ namespace SmartWash.Controllers
 
 
 
-        private decimal GetPrice(string itemType, string serviceType)
+        private decimal GetPrice(string itemType, string serviceType, List<ServicePrice> currentPrices)
         {
-            // Simple pricing logic
+            // Simple item base pricing logic
             decimal basePrice = itemType switch
             {
                 "Shirt" => 50,
@@ -109,15 +123,15 @@ namespace SmartWash.Controllers
                 _ => 40
             };
 
-            decimal multiplier = serviceType switch
-            {
-                "Wash" => 1.0m,
-                "Iron" => 0.5m,
-                "Dry Clean" => 2.0m,
-                _ => 1.0m
-            };
-
-            return basePrice * multiplier;
+            // Dynamic multiplier or flat rate from ServicePrices
+            var service = currentPrices.FirstOrDefault(s => s.ServiceName == serviceType);
+            decimal serviceRate = service?.PricePerUnit ?? 1.0m; // Default to 1.0 if not found
+            
+            // Assume ServicePrice is a multiplier if < 10, otherwise it's a flat additive cost
+            if (serviceRate < 10)
+                return basePrice * serviceRate;
+            else
+                return basePrice + serviceRate;
         }
     }
 }

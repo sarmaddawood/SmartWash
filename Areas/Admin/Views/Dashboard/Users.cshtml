@@ -27,6 +27,16 @@
                 </tr>
             </thead>
             <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="4" class="text-center py-5 text-muted">
+                            <i class="bi bi-people fs-1 d-block mb-3 text-light-emphasis"></i>
+                            <h5 class="fw-bold">No Users Found</h5>
+                            <p class="small">System currently has no active registered accounts.</p>
+                        </td>
+                    </tr>
+                }
                 @foreach (var user in Model)
                 {
                     <tr>
@@ -60,7 +70,7 @@
                         </td>
                         <td class="text-end pe-4">
                             <div class="d-flex justify-content-end gap-2">
-                                <button class="btn btn-sm btn-outline-secondary rounded-pill px-3">View Profile</button>
+                                <a asp-action="EditStaff" asp-route-id="@user.UserId" class="btn btn-sm btn-outline-secondary rounded-pill px-3">Edit Profile</a>
                                 @if (user.IsLockedOut)
                                 {
                                     <form asp-action="ReactivateUser" method="post">

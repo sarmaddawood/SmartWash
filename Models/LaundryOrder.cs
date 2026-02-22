@@ -21,6 +21,9 @@ namespace SmartWash.Models
 
         public string? AssignedToId { get; set; } // Staff User ID
 
+        [Required]
+        public string CreatedById { get; set; } = string.Empty; // Staff User ID who generated the order
+
         public DateTime? InProgressDate { get; set; }
         public DateTime? CompletedDate { get; set; }
 

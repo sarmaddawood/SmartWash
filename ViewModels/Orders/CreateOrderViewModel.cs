@@ -16,6 +16,8 @@ namespace SmartWash.ViewModels.Orders
         public string PhoneNumber { get; set; } = string.Empty;
 
         public List<OrderItemViewModel> Items { get; set; } = new List<OrderItemViewModel>();
+
+        public List<Models.ServicePrice> AvailableServices { get; set; } = new List<Models.ServicePrice>();
     }
 
     public class OrderItemViewModel

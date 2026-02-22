@@ -1,0 +1,56 @@
+@model SmartWash.Models.CustomerProfile
+@{
+    Layout = "_DashboardLayout";
+    ViewData["Title"] = "My Account";
+}
+
+<div class="row justify-content-center">
+    <div class="col-xl-8 col-lg-10">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold mb-1">Account Settings</h2>
+                <p class="text-muted">Manage your personal profile and preferences</p>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+            <div class="card-header bg-primary text-white border-0 py-4 px-4 d-flex align-items-center">
+                <div class="bg-white text-primary rounded-circle d-flex align-items-center justify-content-center me-3 shadow-sm" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                    <i class="bi bi-person-fill"></i>
+                </div>
+                <div>
+                    <h5 class="fw-bold mb-0">@ViewBag.Email</h5>
+                    <span class="badge bg-white text-primary mt-1">@ViewBag.Role</span>
+                </div>
+            </div>
+            <div class="card-body p-4 p-md-5">
+                <form asp-action="UpdateProfile" method="post">
+                    
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-uppercase text-muted">Full Legal Name</label>
+                            <input type="text" name="fullName" class="form-control form-control-lg bg-light border-0" value="@Model?.FullName" placeholder="John Doe" required />
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-uppercase text-muted">Phone Number</label>
+                            <input type="tel" name="phoneNumber" class="form-control form-control-lg bg-light border-0" value="@Model?.PhoneNumber" placeholder="+63 912 345 6789" />
+                        </div>
+                        
+                        <div class="col-12">
+                            <label class="form-label small fw-bold text-uppercase text-muted">Residential Address</label>
+                            <textarea name="address" class="form-control form-control-lg bg-light border-0" rows="3" placeholder="Street, City, Postal Code">@Model?.Address</textarea>
+                        </div>
+                    </div>
+                    
+                    <hr class="my-5 border-light" />
+                    
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+    </div>
+</div>

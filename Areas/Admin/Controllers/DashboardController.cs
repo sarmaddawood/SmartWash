@@ -270,6 +270,51 @@ namespace SmartWash.Areas.Admin.Controllers
             return RedirectToAction(nameof(Users));
         }
 
+        [HttpGet]
+        public async Task<IActionResult> EditStaff(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) return NotFound();
+
+            var profile = await _context.CustomerProfiles.FirstOrDefaultAsync(p => p.UserId == user.Id);
+            
+            ViewBag.StaffEmail = user.Email;
+            ViewBag.StaffId = user.Id;
+
+            return View(profile ?? new CustomerProfile { UserId = user.Id });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditStaff(string userId, string fullName, string phoneNumber, string address)
+        {
+            var profile = await _context.CustomerProfiles.FirstOrDefaultAsync(p => p.UserId == userId);
+            
+            if (profile == null)
+            {
+                profile = new CustomerProfile
+                {
+                    Id = Guid.NewGuid(),
+                    UserId = userId,
+                    FullName = fullName,
+                    PhoneNumber = phoneNumber,
+                    Address = address
+                };
+                _context.CustomerProfiles.Add(profile);
+            }
+            else
+            {
+                profile.FullName = fullName;
+                profile.PhoneNumber = phoneNumber;
+                profile.Address = address;
+            }
+
+            await _context.SaveChangesAsync();
+            TempData["Success"] = "Staff profile updated successfully.";
+            
+            return RedirectToAction(nameof(Users));
+        }
+
         // --- Pricing Management ---
 
         public async Task<IActionResult> Pricing()
@@ -290,6 +335,54 @@ namespace SmartWash.Areas.Admin.Controllers
             await _context.SaveChangesAsync();
 
             TempData["Success"] = $"Price for {price.ServiceName} updated.";
+            return RedirectToAction(nameof(Pricing));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateService(string serviceName, decimal price)
+        {
+            if (!string.IsNullOrWhiteSpace(serviceName) && price >= 0)
+            {
+                var newService = new ServicePrice
+                {
+                    ServiceName = serviceName,
+                    PricePerUnit = price,
+                    IsActive = true
+                };
+                _context.ServicePrices.Add(newService);
+                await _context.SaveChangesAsync();
+                TempData["Success"] = $"Service {serviceName} created.";
+            }
+            return RedirectToAction(nameof(Pricing));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ToggleService(Guid id)
+        {
+            var service = await _context.ServicePrices.FindAsync(id);
+            if (service != null)
+            {
+                service.IsActive = !service.IsActive;
+                service.UpdatedAt = DateTime.UtcNow;
+                await _context.SaveChangesAsync();
+                TempData["Success"] = $"Service {service.ServiceName} " + (service.IsActive ? "activated." : "deactivated.");
+            }
+            return RedirectToAction(nameof(Pricing));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteService(Guid id)
+        {
+            var service = await _context.ServicePrices.FindAsync(id);
+            if (service != null)
+            {
+                _context.ServicePrices.Remove(service);
+                await _context.SaveChangesAsync();
+                TempData["Success"] = $"Service {service.ServiceName} deleted.";
+            }
             return RedirectToAction(nameof(Pricing));
         }
     }

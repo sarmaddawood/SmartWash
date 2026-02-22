@@ -138,15 +138,7 @@
             box-shadow: 0 6px 15px var(--accent-orange-glow);
         }
 
-        /* Dark Mode Refinements */
-        body.dark-mode { 
-            background: #0F172A; 
-            color: #F1F5F9; 
-        }
-        body.dark-mode .sidebar { background-color: #1E293B; border: 1px solid rgba(255,255,255,0.05); }
-        body.dark-mode .sticky-header { background-color: rgba(30, 41, 59, 0.7) !important; border-color: rgba(255,255,255,0.05); }
-        body.dark-mode .card { background-color: #1E293B !important; color: #F8FAFC; border: 1px solid rgba(255,255,255,0.05); }
-        body.dark-mode .text-muted { color: #94A3B8 !important; }
+        /* Rest of UI overrides removed for pure Light theme */
 
         /* Mobile Adjustments */
         @@media (max-width: 991.98px) {
@@ -222,16 +214,12 @@
                     <a class="nav-link @(ViewData["ActivePage"]?.ToString() == "StaffDashboard" ? "active" : "")" asp-area="Staff" asp-controller="Staff" asp-action="Index">
                         <i class="bi bi-kanban"></i> Operations
                     </a>
+                    
+                    <div class="px-4 mt-5 mb-3 small text-muted fw-bold text-uppercase ls-wide">Order Management</div>
+                    <a class="nav-link" asp-area="" asp-controller="Orders" asp-action="Create">
+                        <i class="bi bi-plus-circle-fill"></i> New Order
+                    </a>
                 }
-
-                <a class="nav-link @(ViewData["ActivePage"]?.ToString() == "CustomerDashboard" ? "active" : "")" asp-area="" asp-controller="DashboardRedirect" asp-action="Index">
-                    <i class="bi bi-person-badge"></i> My Account
-                </a>
-                
-                <div class="px-4 mt-5 mb-3 small text-muted fw-bold text-uppercase ls-wide">Settings</div>
-                <a class="nav-link" asp-area="" asp-controller="Orders" asp-action="Create">
-                    <i class="bi bi-plus-circle-fill"></i> New Order
-                </a>
                 
                 <form class="nav-link p-0 m-0 border-0" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
                     <button type="submit" class="nav-link border-0 bg-transparent w-100 text-start m-0">
@@ -254,11 +242,8 @@
                     </div>
                  </div>
                 <div class="d-flex align-items-center">
-                    <button class="btn btn-light rounded-circle me-2" onclick="toggleDarkMode()" title="Toggle Dark Mode">
-                        <i class="bi bi-moon-stars" id="themeIcon"></i>
-                    </button>
-                    <a class="btn btn-light rounded-circle me-2" asp-area="" asp-controller="Home" asp-action="Index" title="View Frontend">
-                        <i class="bi bi-globe"></i>
+                    <a class="btn btn-light rounded-circle me-2" asp-area="" asp-controller="AccountProfile" asp-action="Index" title="My Profile">
+                        <i class="bi bi-person-circle"></i>
                     </a>
                 </div>
             </header>
@@ -293,26 +278,6 @@
             const overlay = document.getElementById('sidebarOverlay');
             sidebar.classList.toggle('show');
             overlay.classList.toggle('show');
-        }
-
-        // Dark Mode Persistence
-        if (localStorage.getItem('theme') === 'dark') {
-            document.body.classList.add('dark-mode');
-            document.getElementById('themeIcon').classList.replace('bi-moon-stars', 'bi-sun');
-        }
-
-        function toggleDarkMode() {
-            const body = document.body;
-            const icon = document.getElementById('themeIcon');
-            body.classList.toggle('dark-mode');
-            
-            if (body.classList.contains('dark-mode')) {
-                localStorage.setItem('theme', 'dark');
-                icon.classList.replace('bi-moon-stars', 'bi-sun');
-            } else {
-                localStorage.setItem('theme', 'light');
-                icon.classList.replace('bi-sun', 'bi-moon-stars');
-            }
         }
     </script>
     @await RenderSectionAsync("Scripts", required: false)

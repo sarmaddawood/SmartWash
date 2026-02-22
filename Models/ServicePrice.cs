@@ -15,5 +15,7 @@ namespace SmartWash.Models
         public decimal PricePerUnit { get; set; }
 
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+        public bool IsActive { get; set; } = true;
     }
 }

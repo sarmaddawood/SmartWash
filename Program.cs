@@ -32,6 +32,13 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => {
 })
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Home/Index";
+    options.AccessDeniedPath = "/Home/Index";
+});
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();

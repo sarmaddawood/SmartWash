@@ -24,11 +24,11 @@ namespace SmartWash.Areas.Staff.Controllers
                 .Include(o => o.CustomerUploads)
                 .AsQueryable();
 
-            // If not admin, only show assigned orders
+            // If not admin, strictly only show orders they personally created
             if (!User.IsInRole("Admin"))
             {
                 var userId = (await _context.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name))?.Id;
-                query = query.Where(o => o.AssignedToId == userId);
+                query = query.Where(o => o.CreatedById == userId);
             }
 
             // Search by Name or ID

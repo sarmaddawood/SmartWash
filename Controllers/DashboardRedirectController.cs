@@ -16,10 +16,9 @@ namespace SmartWash.Controllers
             {
                 return RedirectToAction("Index", "Staff", new { area = "Staff" });
             }
-            else
-            {
-                return RedirectToAction("Index", "Dashboard");
-            }
+            
+            // Failsafe: If a ghost/customer session exists, force them out
+            return Redirect("/Identity/Account/Logout");
         }
     }
 }

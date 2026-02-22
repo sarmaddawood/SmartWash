@@ -1,0 +1,61 @@
+@model SmartWash.Models.CustomerProfile
+@{
+    Layout = "_DashboardLayout";
+    ViewData["Title"] = "Edit Staff Profile";
+    ViewData["ActivePage"] = "AdminUsers";
+}
+
+<div class="row mb-4 align-items-center">
+    <div class="col-md-6">
+        <h2 class="fw-bold mb-1">Edit Staff Member</h2>
+        <p class="text-muted mb-0">Update contact and identity information</p>
+    </div>
+    <div class="col-md-6 text-md-end mt-3 mt-md-0">
+        <a asp-action="Users" class="btn btn-light rounded-pill px-4 shadow-sm"><i class="bi bi-arrow-left me-2"></i> Back to Workspace</a>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-xl-8 col-lg-10">
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+            <div class="card-header bg-primary text-white border-0 py-4 px-4 d-flex align-items-center">
+                <div class="bg-white text-primary rounded-circle d-flex align-items-center justify-content-center me-3 shadow-sm" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                    <i class="bi bi-person-badge-fill"></i>
+                </div>
+                <div>
+                    <h5 class="fw-bold mb-0">@ViewBag.StaffEmail</h5>
+                    <span class="badge bg-white text-primary mt-1">Staff Member</span>
+                </div>
+            </div>
+            
+            <div class="card-body p-4 p-md-5">
+                <form asp-action="EditStaff" method="post">
+                    <input type="hidden" name="userId" value="@ViewBag.StaffId" />
+                    
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-uppercase text-muted">Full Legal Name</label>
+                            <input type="text" name="fullName" class="form-control form-control-lg bg-light border-0" value="@Model?.FullName" required />
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-uppercase text-muted">Phone Number</label>
+                            <input type="tel" name="phoneNumber" class="form-control form-control-lg bg-light border-0" value="@Model?.PhoneNumber" />
+                        </div>
+                        
+                        <div class="col-12">
+                            <label class="form-label small fw-bold text-uppercase text-muted">Residential Address</label>
+                            <textarea name="address" class="form-control form-control-lg bg-light border-0" rows="3">@Model?.Address</textarea>
+                        </div>
+                    </div>
+                    
+                    <hr class="my-5 border-light" />
+                    
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm">Save Profile Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

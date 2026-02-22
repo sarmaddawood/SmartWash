@@ -73,9 +73,10 @@
                                     <div class="col-md-5">
                                         <label class="form-label small fw-bold">Service</label>
                                         <select name="Items[@i].ServiceType" class="form-select border-0 shadow-sm">
-                                            <option value="Wash">Wash & Fold</option>
-                                            <option value="Iron">Ironing Only</option>
-                                            <option value="Dry Clean">Dry Cleaning</option>
+                                            @foreach (var svc in Model.AvailableServices)
+                                            {
+                                                <option value="@svc.ServiceName">@svc.ServiceName</option>
+                                            }
                                         </select>
                                     </div>
                                     <div class="col-md-2">
@@ -113,6 +114,7 @@
     <partial name="_ValidationScriptsPartial" />
     <script>
         let itemIndex = @Model.Items.Count;
+        const availableServicesHtml = `@Html.Raw(string.Join("", Model.AvailableServices.Select(s => $"<option value='{s.ServiceName}'>{s.ServiceName}</option>")))`;
 
         function addItem() {
             const container = document.getElementById('itemsContainer');
@@ -133,9 +135,7 @@
                 <div class="col-md-5">
                     <label class="form-label small fw-bold">Service</label>
                     <select name="Items[${itemIndex}].ServiceType" class="form-select border-0 shadow-sm">
-                        <option value="Wash">Wash & Fold</option>
-                        <option value="Iron">Ironing Only</option>
-                        <option value="Dry Clean">Dry Cleaning</option>
+                        ${availableServicesHtml}
                     </select>
                 </div>
                 <div class="col-md-2">
