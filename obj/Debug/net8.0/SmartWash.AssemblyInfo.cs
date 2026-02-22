@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SmartWash")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+67ad25e7cf25656dc9e52104f6f0e1f8e2629603")]
 [assembly: System.Reflection.AssemblyProductAttribute("SmartWash")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SmartWash")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

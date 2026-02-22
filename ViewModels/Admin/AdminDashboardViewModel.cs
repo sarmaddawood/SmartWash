@@ -1,4 +1,5 @@
 using SmartWash.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace SmartWash.ViewModels.Admin
 {
