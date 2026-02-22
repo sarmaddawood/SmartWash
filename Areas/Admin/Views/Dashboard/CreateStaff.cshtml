@@ -1,0 +1,56 @@
+@model SmartWash.ViewModels.Admin.CreateStaffViewModel
+@{
+    Layout = "_DashboardLayout";
+    ViewData["Title"] = "Add New Staff";
+    ViewData["ActivePage"] = "AdminDashboard";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-5">
+                <div class="d-flex align-items-center mb-4">
+                    <div class="bg-primary text-white p-3 rounded-4 me-3">
+                        <i class="bi bi-person-plus fs-4"></i>
+                    </div>
+                    <div>
+                        <h4 class="fw-bold mb-0">Onboard Staff</h4>
+                        <p class="text-muted small mb-0">Create a new service operator account</p>
+                    </div>
+                </div>
+
+                <form asp-action="CreateStaff" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+                    
+                    <div class="mb-3">
+                        <label asp-for="FullName" class="form-label small fw-bold text-uppercase">Full Name</label>
+                        <input asp-for="FullName" class="form-control" placeholder="E.g. Jane Smith" />
+                        <span asp-validation-for="FullName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label small fw-bold text-uppercase">Email Address</label>
+                        <input asp-for="Email" class="form-control" placeholder="staff@smartwash.com" />
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Password" class="form-label small fw-bold text-uppercase">Temporary Password</label>
+                        <input asp-for="Password" class="form-control" type="password" />
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg rounded-pill shadow-sm py-3 fw-bold">Create Account</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <a asp-action="Users" class="text-muted text-decoration-none small">
+                <i class="bi bi-arrow-left me-1"></i> Back to User Registry
+            </a>
+        </div>
+    </div>
+</div>

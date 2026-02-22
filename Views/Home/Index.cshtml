@@ -1,0 +1,140 @@
+﻿@{
+    ViewData["Title"] = "SmartWash - Premium Garment Care";
+}
+
+<div class="hero-section text-center py-5 mb-5 position-relative overflow-hidden" style="background: linear-gradient(135deg, #0d6efd 0%, #00d2ff 100%); border-radius: 0 0 4rem 4rem; min-height: 80vh; display: flex; align-items: center;">
+    <div class="circles">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+    </div>
+    
+    <div class="container py-5 position-relative z-1">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-white">
+                <span class="badge rounded-pill bg-white text-primary px-3 py-2 mb-4 fw-bold shadow-sm">NEW: Express 4-Hour Service Available</span>
+                <h1 class="display-2 fw-bold mb-4">Laundry Day, <br><span class="text-white-50">Redefined.</span></h1>
+                <p class="lead mb-5 opacity-90 fs-4">Experience the most advanced garment care platform. From stain removal to doorstep delivery, we handle it all with a touch of magic.</p>
+                <div class="d-flex flex-wrap justify-content-center gap-3">
+                    <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-light btn-lg px-5 py-3 rounded-pill fw-bold shadow-lg transform-hover">Get Started Free</a>
+                    <a href="#services" class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill fw-bold transform-hover">Explore Services</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 h-100 p-4 transition-up">
+                <div class="bg-primary-subtle text-primary p-3 rounded-4 d-inline-block mb-4 shadow-sm">
+                    <i class="bi bi-clock-history fs-3"></i>
+                </div>
+                <h4 class="fw-bold">Real-time Tracking</h4>
+                <p class="text-muted">Monitor your laundry from wash to delivery with our automated tracking system.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 h-100 p-4 transition-up">
+                <div class="bg-success-subtle text-success p-3 rounded-4 d-inline-block mb-4 shadow-sm">
+                    <i class="bi bi-shield-check fs-3"></i>
+                </div>
+                <h4 class="fw-bold">Premium Quality</h4>
+                <p class="text-muted">We use eco-friendly detergents and specialized care for every fabric type.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 h-100 p-4 transition-up">
+                <div class="bg-info-subtle text-info p-3 rounded-4 d-inline-block mb-4 shadow-sm">
+                    <i class="bi bi-truck fs-3"></i>
+                </div>
+                <h4 class="fw-bold">Doorstep Service</h4>
+                <p class="text-muted">Free pickup and delivery for all orders over ₱500. No more laundry trips.</p>
+            </div>
+        </div>
+    </div>
+
+    <section id="services" class="py-5">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold">Garment Solutions</h2>
+            <p class="text-muted fs-5">Tailored care for everything you wear</p>
+        </div>
+        
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="bg-light p-4 rounded-4 text-center">
+                            <i class="bi bi-droplet fs-1 text-primary mb-3"></i>
+                            <h6 class="fw-bold">Wet Cleaning</h6>
+                        </div>
+                    </div>
+                    <div class="col-6 mt-4">
+                        <div class="bg-primary text-white p-4 rounded-4 text-center shadow">
+                            <i class="bi bi-wind fs-1 mb-3"></i>
+                            <h6 class="fw-bold">Steam Ironing</h6>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="bg-light p-4 rounded-4 text-center">
+                            <i class="bi bi-stars fs-1 text-warning mb-3"></i>
+                            <h6 class="fw-bold">Stain Removal</h6>
+                        </div>
+                    </div>
+                    <div class="col-6 mt-4">
+                        <div class="bg-light p-4 rounded-4 text-center">
+                            <i class="bi bi-gem fs-1 text-info mb-3"></i>
+                            <h6 class="fw-bold">Luxury Fabrics</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <h3 class="fw-bold mb-4">Why choose SmartWash?</h3>
+                <ul class="list-unstyled">
+                    <li class="d-flex mb-4">
+                        <i class="bi bi-check-circle-fill text-success fs-4 me-3"></i>
+                        <div>
+                            <h6 class="fw-bold">Advanced Logistics</h6>
+                            <p class="text-muted small">Our proprietary routing algorithm ensures your laundry is picked up and delivered on time, every time.</p>
+                        </div>
+                    </li>
+                    <li class="d-flex mb-4">
+                        <i class="bi bi-check-circle-fill text-success fs-4 me-3"></i>
+                        <div>
+                            <h6 class="fw-bold">Digital Payments</h6>
+                            <p class="text-muted small">Pay securely using major local e-wallets and credit cards. Instant invoices generated for every transaction.</p>
+                        </div>
+                    </li>
+                    <li class="d-flex">
+                        <i class="bi bi-check-circle-fill text-success fs-4 me-3"></i>
+                        <div>
+                            <h6 class="fw-bold">Staff Expertise</h6>
+                            <p class="text-muted small">Our team is trained in the latest fabric care technologies to ensure your items come back looking brand new.</p>
+                        </div>
+                    </li>
+                </ul>
+                <div class="mt-4">
+                    <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary rounded-pill px-4 py-2 fw-bold">Start Your First Order</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<style>
+    .z-1 { z-index: 1; }
+    .circles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; }
+    .circle { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.1); }
+    .circle-1 { width: 300px; height: 300px; top: -100px; right: -50px; }
+    .circle-2 { width: 500px; height: 500px; bottom: -200px; left: -100px; }
+    .circle-3 { width: 150px; height: 150px; top: 20%; left: 10%; }
+    
+    .transform-hover { transition: transform 0.3s ease; }
+    .transform-hover:hover { transform: scale(1.05); }
+    
+    .transition-up { transition: all 0.3s ease; }
+    .transition-up:hover { transform: translateY(-10px); box-shadow: 0 1rem 3rem rgba(0,0,0,0.175) !important; }
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">

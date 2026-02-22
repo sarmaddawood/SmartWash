@@ -1,0 +1,161 @@
+@model SmartWash.ViewModels.Orders.CreateOrderViewModel
+@{
+    ViewData["Title"] = "Place New Order";
+    Layout = "_DashboardLayout";
+}
+
+<div class="row justify-content-center">
+    <div class="col-xl-10">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold mb-1">New Laundry Order</h2>
+                <p class="text-muted">Fill in the details to schedule your pickup and delivery</p>
+            </div>
+            <a asp-controller="Dashboard" asp-action="Index" class="btn btn-light rounded-pill shadow-sm px-4">
+                <i class="bi bi-arrow-left me-2"></i> Dashboard
+            </a>
+        </div>
+
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4 p-md-5">
+                <form asp-action="Create" method="post" id="orderForm">
+                    <div class="row mb-5">
+                        <div class="col-12 mb-4">
+                            <h5 class="fw-bold text-dark border-start border-primary border-4 ps-3">1. Delivery Information</h5>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="CustomerName" class="form-label fw-bold small text-uppercase">Full Name</label>
+                            <input asp-for="CustomerName" class="form-control form-control-lg bg-light border-0" placeholder="John Doe" />
+                            <span asp-validation-for="CustomerName" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="PhoneNumber" class="form-label fw-bold small text-uppercase">Phone Number</label>
+                            <input asp-for="PhoneNumber" class="form-control form-control-lg bg-light border-0" placeholder="+63 912 345 6789" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="Address" class="form-label fw-bold small text-uppercase">Delivery Address</label>
+                            <textarea asp-for="Address" class="form-control form-control-lg bg-light border-0" rows="2" placeholder="Street Name, Building, zip code"></textarea>
+                            <span asp-validation-for="Address" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h5 class="fw-bold text-dark mb-0 border-start border-primary border-4 ps-3">2. Service Selection</h5>
+                            <button type="button" class="btn btn-primary btn-sm rounded-pill px-3" onclick="addItem()">
+                                <i class="bi bi-plus-lg me-1"></i> Add Another
+                            </button>
+                        </div>
+                        
+                        <div id="itemsContainer">
+                            @for (int i = 0; i < Model.Items.Count; i++)
+                            {
+                                <div class="order-item row g-3 mb-3 align-items-end p-4 bg-light rounded-4 position-relative">
+                                    <div class="col-md-5">
+                                        <label class="form-label small fw-bold">Item Type</label>
+                                        <select name="Items[@i].ItemType" class="form-select border-0 shadow-sm">
+                                            <option value="Shirt">Shirt</option>
+                                            <option value="Pant">Pant</option>
+                                            <option value="Dress">Dress</option>
+                                            <option value="Suit">Suit</option>
+                                            <option value="Towel">Towel / Bedding</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <label class="form-label small fw-bold">Service</label>
+                                        <select name="Items[@i].ServiceType" class="form-select border-0 shadow-sm">
+                                            <option value="Wash">Wash & Fold</option>
+                                            <option value="Iron">Ironing Only</option>
+                                            <option value="Dry Clean">Dry Cleaning</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="form-label small fw-bold">Quantity</label>
+                                        <div class="d-flex align-items-center">
+                                            <input name="Items[@i].Quantity" type="number" class="form-control border-0 shadow-sm" value="1" min="1" />
+                                            <button type="button" class="btn btn-link text-danger ms-2 p-0" onclick="removeItem(this)">
+                                                <i class="bi bi-trash fs-5"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="bg-primary-subtle rounded-4 p-4 mt-5">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h6 class="fw-bold text-primary mb-1">Standard Pricing Applies</h6>
+                                <p class="small text-muted mb-0">Total cost will be calculated automatically based on your selection. You can pay after confirming the details.</p>
+                            </div>
+                            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                                <button type="submit" class="btn btn-primary btn-lg rounded-pill shadow px-5">Submit Order</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        let itemIndex = @Model.Items.Count;
+
+        function addItem() {
+            const container = document.getElementById('itemsContainer');
+            const newItem = document.createElement('div');
+            newItem.className = 'order-item row g-3 mb-3 align-items-end p-4 bg-light rounded-4 position-relative fade-in';
+            newItem.innerHTML = `
+                <div class="col-md-5">
+                    <label class="form-label small fw-bold">Item Type</label>
+                    <select name="Items[${itemIndex}].ItemType" class="form-select border-0 shadow-sm">
+                        <option value="Shirt">Shirt</option>
+                        <option value="Pant">Pant</option>
+                        <option value="Dress">Dress</option>
+                        <option value="Suit">Suit</option>
+                        <option value="Towel">Towel / Bedding</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label small fw-bold">Service</label>
+                    <select name="Items[${itemIndex}].ServiceType" class="form-select border-0 shadow-sm">
+                        <option value="Wash">Wash & Fold</option>
+                        <option value="Iron">Ironing Only</option>
+                        <option value="Dry Clean">Dry Cleaning</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small fw-bold">Quantity</label>
+                    <div class="d-flex align-items-center">
+                        <input name="Items[${itemIndex}].Quantity" type="number" class="form-control border-0 shadow-sm" value="1" min="1" />
+                        <button type="button" class="btn btn-link text-danger ms-2 p-0" onclick="removeItem(this)">
+                            <i class="bi bi-trash fs-5"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            container.appendChild(newItem);
+            itemIndex++;
+        }
+
+        function removeItem(btn) {
+            const items = document.querySelectorAll('.order-item');
+            if (items.length > 1) {
+                btn.closest('.order-item').remove();
+            } else {
+                alert("At least one item is required.");
+            }
+        }
+    </script>
+    <style>
+        .fade-in { animation: fadeIn 0.3s ease-in; }
+        @@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+}

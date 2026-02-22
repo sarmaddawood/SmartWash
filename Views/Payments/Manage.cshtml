@@ -1,0 +1,63 @@
+@model List<SmartWash.Models.LaundryOrder>
+@{
+    ViewData["Title"] = "Payment Record Management";
+    Layout = "_DashboardLayout";
+}
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Payment Tracking</h2>
+            <p class="text-muted mb-0">Monitor and update order transaction statuses</p>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead class="bg-light">
+                    <tr>
+                        <th class="ps-4">Customer</th>
+                        <th>Order Date</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th class="text-end pe-4">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model)
+                    {
+                        <tr>
+                            <td class="ps-4">
+                                <div class="fw-bold">@order.Customer?.FullName</div>
+                                <div class="small text-muted">#@order.Id.ToString().Substring(0, 8)</div>
+                            </td>
+                            <td>@order.OrderDate.ToString("MMM dd, yyyy")</td>
+                            <td class="fw-bold">₱@order.TotalPrice.ToString("N2")</td>
+                            <td>
+                                @if (order.Payment?.Status == "Paid")
+                                {
+                                    <span class="badge rounded-pill bg-success-subtle text-success-emphasis px-3">Paid</span>
+                                }
+                                else
+                                {
+                                    <span class="badge rounded-pill bg-danger-subtle text-danger-emphasis px-3">Unpaid</span>
+                                }
+                            </td>
+                            <td class="text-end pe-4">
+                                <a asp-action="DownloadInvoice" asp-route-id="@order.Id" class="btn btn-outline-secondary btn-sm rounded-pill">
+                                    <i class="bi bi-download me-1"></i> Invoice
+                                </a>
+                                @if (order.Payment?.Status != "Paid")
+                                {
+                                    <form asp-action="ProcessPayment" method="post" class="d-inline ms-1">
+                                        <input type="hidden" name="orderId" value="@order.Id" />
+                                        <button type="submit" class="btn btn-primary btn-sm rounded-pill">Mark Paid</button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>

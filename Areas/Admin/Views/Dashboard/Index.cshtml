@@ -1,0 +1,189 @@
+@model SmartWash.ViewModels.Admin.AdminDashboardViewModel
+@{
+    Layout = "_DashboardLayout";
+    ViewData["Title"] = "Executive Overview";
+    ViewData["ActivePage"] = "AdminDashboard";
+}
+
+<div class="row g-4 mb-4">
+    <div class="col-xl-3 col-md-6">
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between mb-3">
+                    <div class="bg-primary-subtle text-primary p-2 rounded-3"><i class="bi bi-people fs-4"></i></div>
+                    <span class="text-success small fw-bold">+12% <i class="bi bi-arrow-up"></i></span>
+                </div>
+                <h3 class="fw-bold mb-1">@Model.TotalCustomers</h3>
+                <p class="text-muted small mb-0 fw-bold text-uppercase ls-wide">Total Customers</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between mb-3">
+                    <div class="bg-success-subtle text-success p-2 rounded-3"><i class="bi bi-currency-dollar fs-4"></i></div>
+                    <span class="text-success small fw-bold">+8.4% <i class="bi bi-arrow-up"></i></span>
+                </div>
+                <h3 class="fw-bold mb-1">₱@Model.TotalRevenue.ToString("N2")</h3>
+                <p class="text-muted small mb-0 fw-bold text-uppercase ls-wide">Total Revenue</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between mb-3">
+                    <div class="bg-warning-subtle text-warning p-2 rounded-3"><i class="bi bi-hourglass-split fs-4"></i></div>
+                    <span class="text-danger small fw-bold">-2% <i class="bi bi-arrow-down"></i></span>
+                </div>
+                <h3 class="fw-bold mb-1">@Model.PendingOrders</h3>
+                <p class="text-muted small mb-0 fw-bold text-uppercase ls-wide">Pending Orders</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between mb-3">
+                    <div class="bg-info-subtle text-info p-2 rounded-3"><i class="bi bi-truck fs-4"></i></div>
+                    <span class="badge rounded-pill bg-info text-white">Active</span>
+                </div>
+                <h3 class="fw-bold mb-1">@Model.ActiveOrders</h3>
+                <p class="text-muted small mb-0 fw-bold text-uppercase ls-wide">Orders in Process</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-header bg-white border-0 py-3 px-4">
+                <h5 class="fw-bold mb-0">Revenue Trend</h5>
+            </div>
+            <div class="card-body p-4">
+                <canvas id="revenueChart" style="height: 300px;"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-header bg-white border-0 py-3 px-4">
+                <h5 class="fw-bold mb-0">Order Status</h5>
+            </div>
+            <div class="card-body p-4">
+                <canvas id="statusChart" style="height: 300px;"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+    <div class="card-header bg-white border-0 py-3 px-4 d-flex justify-content-between align-items-center">
+        <h5 class="fw-bold mb-0">Recent Orders</h5>
+        <a asp-action="Orders" class="btn btn-primary btn-sm rounded-pill px-3">View All</a>
+    </div>
+    <div class="table-responsive">
+        <table class="table align-middle mb-0">
+            <thead class="bg-light">
+                <tr>
+                    <th class="ps-4">Order ID</th>
+                    <th>Customer</th>
+                    <th>Status</th>
+                    <th class="text-end pe-4">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model.RecentOrders)
+                {
+                    <tr>
+                        <td class="ps-4">#@order.Id.ToString().Substring(0, 8)</td>
+                        <td>@order.Customer?.FullName</td>
+                        <td>
+                            <span class="badge rounded-pill bg-light text-dark border px-3">@order.Status</span>
+                        </td>
+                        <td class="text-end pe-4 fw-bold">₱@order.TotalPrice.ToString("N2")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4 overflow-hidden mt-4">
+    <div class="card-header bg-white border-0 py-3 px-4">
+        <h5 class="fw-bold mb-0">Staff Performance</h5>
+    </div>
+    <div class="table-responsive">
+        <table class="table align-middle mb-0">
+            <thead class="bg-light">
+                <tr>
+                    <th class="ps-4">Staff Name</th>
+                    <th>Completed Orders</th>
+                    <th class="text-end pe-4">Avg Processing Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.StaffPerformance.Any())
+                {
+                    <tr>
+                        <td colspan="3" class="text-center py-4 text-muted small">No performance data available yet.</td>
+                    </tr>
+                }
+                @foreach (var p in Model.StaffPerformance)
+                {
+                    <tr>
+                        <td class="ps-4 fw-bold">@p.StaffName</td>
+                        <td>@p.CompletedOrders</td>
+                        <td class="text-end pe-4">
+                            <span class="badge bg-info-subtle text-info px-3">@TimeSpan.FromMinutes(p.AverageCompletionTimeMinutes).ToString(@"hh\:mm") hrs</span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Revenue Chart
+        const revCtx = document.getElementById('revenueChart').getContext('2d');
+        new Chart(revCtx, {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.RevenueTrend.Select(r => r.Month))),
+                datasets: [{
+                    label: 'Revenue (₱)',
+                    data: @Html.Raw(Json.Serialize(Model.RevenueTrend.Select(r => r.Amount))),
+                    borderColor: '#2563eb',
+                    backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+
+        // Status Chart
+        const statusCtx = document.getElementById('statusChart').getContext('2d');
+        new Chart(statusCtx, {
+            type: 'doughnut',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.OrdersByStatus.Keys)),
+                datasets: [{
+                    data: @Html.Raw(Json.Serialize(Model.OrdersByStatus.Values)),
+                    backgroundColor: ['#f59e0b', '#3b82f6', '#10b981', '#6366f1', '#6b7280']
+                }]
+            },
+            options: {
+                plugins: { legend: { position: 'bottom' } },
+                cutout: '70()'
+            }
+        });
+    </script>
+}
