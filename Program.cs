@@ -16,10 +16,7 @@ builder.WebHost.ConfigureKestrel(options =>
     options.ListenAnyIP(int.Parse(port));
 });
 
-// Ensure appsettings.json is loaded
-builder.Configuration.SetBasePath(Directory.GetCurrentDirectory());
-builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-builder.Configuration.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true);
+// Load configuration: AddEnvironmentVariables allows Railway env vars to override appsettings.json
 builder.Configuration.AddEnvironmentVariables();
 
 // Add services to the container.
@@ -83,6 +80,9 @@ else
 // Note: HTTPS redirection is disabled; Railway handles TLS at the proxy layer.
 // app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+// Health check endpoint for Railway (always returns 200)
+app.MapGet("/health", () => Results.Ok(new { status = "healthy" }));
 
 app.UseRouting();
 
