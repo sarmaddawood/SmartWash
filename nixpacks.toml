@@ -1,2 +1,8 @@
 [phases.setup]
-nixPkgs = ["dotnet-sdk_8"]
+nixPkgs = ["dotnet-sdk_8", "icu"]
+
+[phases.build]
+cmds = ["dotnet publish -c Release -o ./out"]
+
+[start]
+cmd = "cd ./out && ASPNETCORE_URLS=http://0.0.0.0:$PORT dotnet SmartWash.dll"
