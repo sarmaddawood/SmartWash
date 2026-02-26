@@ -1,0 +1,35 @@
+{
+  "_comments": {
+    "build": "Restores NuGet packages, then publishes a Release build to ./out using Linux paths only.",
+    "detect": "The start command auto-detects the output DLL via the single *.deps.json in ./out — no hardcoded names.",
+    "packages": "Native libs required for PDF rendering (QuestPDF) and font support inside the Linux container.",
+    "port": "Railway injects $PORT; the app binds to 0.0.0.0:$PORT (fallback 8080).",
+    "watch": "For dev/hot-reload, replace the startCommand with: dotnet watch run --project $(ls *.csproj | head -n 1)"
+  },
+  "build": {
+    "builder": "railpack",
+    "buildCommand": "dotnet restore && dotnet publish -c Release -o ./out --no-restore",
+    "installPackages": [
+      "libicu-dev",
+      "libgd3",
+      "libjpeg62-turbo",
+      "fontconfig-config",
+      "fonts-dejavu-core"
+    ]
+  },
+  "deploy": {
+    "startCommand": "cd ./out && ASPNETCORE_URLS=http://0.0.0.0:${PORT:-8080} dotnet $(basename *.deps.json .deps.json).dll"
+  },
+  "plugins": {
+    "dotnet": {
+      "version": "8.0.418"
+    }
+  },
+  "env": {
+    "DOTNET_RUNNING_IN_CONTAINER": "true",
+    "ASPNETCORE_ENVIRONMENT": "Production"
+  },
+  "settings": {
+    "region": "us-west1"
+  }
+}

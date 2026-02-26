@@ -317,3 +317,5 @@ C:\Users\Raiden Shogun\Documents\SmartWash Alaminos\SmartWash\bin\Debug\net8.0\S
 C:\Users\Raiden Shogun\Documents\SmartWash Alaminos\SmartWash\bin\Debug\net8.0\System.Text.Json.dll
 C:\Users\Raiden Shogun\Documents\SmartWash Alaminos\SmartWash\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
 C:\Users\Raiden Shogun\Documents\SmartWash Alaminos\SmartWash\obj\Debug\net8.0\SmartWash.sourcelink.json
+C:\Users\Raiden Shogun\Documents\SmartWash Alaminos\SmartWash\bin\Debug\net8.0\railway.json
+C:\Users\Raiden Shogun\Documents\SmartWash Alaminos\SmartWash\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
